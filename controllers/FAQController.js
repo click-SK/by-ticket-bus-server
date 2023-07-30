@@ -29,9 +29,9 @@ export const addNewFAQ = async (req,res) => {
 
 export const updateFAQ = async (req, res) => {
     try {
-      const {titleSp, titleEn, descriptionSp, descriptionEn, postId } = req.body;
+      const {titleSp, titleEn, descriptionSp, descriptionEn, id } = req.body;
   
-      const post = await FAQModel.findById(postId);
+      const post = await FAQModel.findById(id);
   
       if (!post) {
         return res.status(404).json({ error: 'Пост не знайдено' });
@@ -56,9 +56,11 @@ export const updateFAQ = async (req, res) => {
 
 export const removeFAQ = async (req, res) => {
     try {
-      const { postId } = req.body;
+      const { id } = req.body;
 
-      await FAQModel.findByIdAndDelete(postId);
+      await FAQModel.findByIdAndDelete(id);
+
+      res.json({message: 'success'})
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: 'Помилка видалення поста' });
