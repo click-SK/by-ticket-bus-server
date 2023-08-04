@@ -15,8 +15,6 @@ export const addNewPost = async (req,res) => {
     try{
         const {blogImage, titleSp, titleEn, descriptionSp, descriptionEn} = req.body;
 
-        console.log('req.body',req.body);
-
         const post = await BlogModel.create({
             blogImage: `/uploadsBlog/${req.file.originalname}`,
             titleSp, 
@@ -63,9 +61,7 @@ export const updatePost = async (req, res) => {
 export const removePost = async (req, res) => {
   try {
     const { filename, id } = req.body;
-    console.log('after',filename);
     const newFileName = filename.slice(1);
-    console.log('before',newFileName);
   
     await BlogModel.findByIdAndDelete(id); // Переставлено перед fs.unlink
   

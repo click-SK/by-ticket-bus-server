@@ -41,14 +41,12 @@ export const login = async (req, res) => {
         const user = await PartnerModel.findOne({email: req.body.email});
 
         if(!user) {
-          console.log('uSER');
             return res.status(404).json({
                 message: 'User not found',
             })
         }
 
         if(user.disabled) {
-          console.log('disabled',user.disabled);
           return res.status(404).json({
               message: 'User disabled',
           })
@@ -57,7 +55,6 @@ export const login = async (req, res) => {
         const isValidPass = await bcrypt.compare(req.body.password, user._doc.password);
 
         if(!isValidPass) {
-          console.log('PASSWORD');
             return res.status(400).json({
                 message: 'Password not found',
             })

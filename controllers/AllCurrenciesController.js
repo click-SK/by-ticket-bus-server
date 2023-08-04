@@ -26,7 +26,7 @@ export const updateAllCurrencies = async (data) => {
                 currencieValue: data[key]
             })
         }
-        console.log('currenciesArray',currenciesArray);
+
         currencies.currencies = currenciesArray;
 
         await currencies.save();

@@ -12,7 +12,7 @@ export const register = async (req, res) => {
         if (userData.error) {
             return res.status(500).json({ message: userData.error });
         }
-        // res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        // res.cookie('BUS_A_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
         return res.json(userData); 
         
     } catch (error) {
@@ -30,7 +30,7 @@ export const login = async (req, res) => {
             return res.json({ message: userData.error });
         }
 
-        res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        res.cookie('BUS_A_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
         return res.json(userData); 
 
     } catch(e) {
@@ -40,9 +40,9 @@ export const login = async (req, res) => {
 
 export const logout = async (req,res) => {
     try {
-        const {refreshToken} = req.cookies;
-        const token = await AdministrationService.logout(refreshToken);
-        res.clearCookie('refreshToken');
+        const {BUS_A_refreshToken} = req.cookies;
+        const token = await AdministrationService.logout(BUS_A_refreshToken);
+        res.clearCookie('BUS_A_refreshToken');
         return res.json(token);
     } catch (e) {
         console.log(e);
@@ -51,12 +51,12 @@ export const logout = async (req,res) => {
 
 export const refresh = async (req,res) => {
     try {
-        const {refreshToken} = req.cookies;
-        const userData = await AdministrationService.refresh(refreshToken)
+        const {BUS_A_refreshToken} = req.cookies;
+        const userData = await AdministrationService.refresh(BUS_A_refreshToken)
         if (userData.error) {
             return res.status(503).json({ message: userData.error });
         }
-        res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        res.cookie('BUS_A_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
         return res.json(userData); 
     } catch (e) {
         console.log(e);

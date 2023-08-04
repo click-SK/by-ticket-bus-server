@@ -40,7 +40,6 @@ export const removeToken = async (refreshToken) => {
 export const validateRefreshToken = async (token) => {
     try {
         const userData = jwt.verify(token, process.env.SECRET_KEY_REFRESH);
-        console.log('userData refresh token',userData);
         if(!userData) {
             return { error: 'User not found' };
         }
