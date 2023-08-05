@@ -10,6 +10,7 @@ export const register = async (req, res) => {
         const userData = await UserService.registration(email, firstName, lastName, password, birthday, phone);
 
         if (userData.error) {
+            return res.json({ message: userData.error });
         }
         res.cookie('BUS_U_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
         return res.json(userData); 

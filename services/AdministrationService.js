@@ -8,7 +8,7 @@ export const registration = async (login, firstName, lastName, password) => {
     const canditate = await AdministrationModel.findOne({ login });
 
     if (canditate) {
-      return { error: "A user with this login already exists" };
+      return { error: "Email already exists" };
     }
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);

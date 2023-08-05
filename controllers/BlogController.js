@@ -1,6 +1,6 @@
 import BlogModel from '../models/Blog.js';
 import fs from 'fs';
-
+import { v4 as uuidv4 } from 'uuid';
 export const getAllPosts = async (req,res) => {
     try{
         const allData = await BlogModel.find();
@@ -39,10 +39,32 @@ export const updatePost = async (req, res) => {
         return res.status(404).json({ error: 'Пост не знайдено' });
       }
 
-      if(req?.file?.originalname) {
-        post.blogImage = `/uploadsBlog/${req.file.originalname}`;
-      }
+      // if(req?.file?.originalname) {
+      //   post.blogImage = `/uploadsBlog/${req.file.originalname}`;
+      // }
+
+      if(req.file && req.file.originalname) {
+        const uniqueFileName = uuidv4() + '_' + req.file.originalname;
+        const oldFilename = post.blogImage;
+        const previousImage = oldFilename && oldFilename.slice(1);
   
+        if(previousImage) {
+          try {
+            // Перевіряємо існування файлу перед видаленням
+            if (fs.existsSync(previousImage)) {
+              fs.promises.unlink(previousImage);
+            }
+          } catch (error) {
+            console.log('Помилка видалення попереднього зображення:', error);
+          }
+        }
+  
+        post.blogImage = `/uploadsBlog/${uniqueFileName}`;
+        fs.rename(`./uploadsBlog/${req.file.originalname}`, `./uploadsBlog/${uniqueFileName}`, (err) => {
+          if (err) throw err; // не удалось переименовать файл
+          console.log("Файл успешно переименован");
+        });
+      }
       // Оновлення полів, крім картинки
       post.titleSp = titleSp;
       post.titleEn = titleEn;

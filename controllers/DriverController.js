@@ -3,6 +3,12 @@ export const register = async (req, res) => {
     try {
         const { fullName, login, email, password, license, phone, address } = req.body;
 
+        const canditate = await DriverModel.findOne({ email });
+
+        if (canditate) {
+            return res.json({ message: "Email already exists" });
+          }
+
         const driver = await DriverModel.create({
             fullName,
             login,
