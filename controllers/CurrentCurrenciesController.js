@@ -19,9 +19,6 @@ export const deleteCurrencies = async (req,res) => {
     try{
         const {id} = req.body;
 
-        console.log('req.body',req.body);
-        console.log('id',id);
-
         await CurrentCurrenciesModel.findByIdAndDelete(id);
 
         res.json({ message: 'succeed'})

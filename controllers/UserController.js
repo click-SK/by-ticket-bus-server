@@ -10,8 +10,9 @@ export const register = async (req, res) => {
         const userData = await UserService.registration(email, firstName, lastName, password, birthday, phone);
 
         if (userData.error) {
+            return res.json({ message: userData.error });
         }
-        res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        res.cookie('BUS_U_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
         return res.json(userData); 
         
     } catch (error) {
@@ -29,7 +30,7 @@ export const login = async (req, res) => {
             return res.json({ message: userData.error });
         }
 
-        res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        res.cookie('BUS_U_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
         return res.json(userData); 
 
     } catch(e) {
@@ -39,9 +40,9 @@ export const login = async (req, res) => {
 
 export const logout = async (req,res) => {
     try {
-        const {refreshToken} = req.cookies;
-        const token = await UserService.logout(refreshToken);
-        res.clearCookie('refreshToken');
+        const {BUS_U_refreshToken} = req.cookies;
+        const token = await UserService.logout(BUS_U_refreshToken);
+        res.clearCookie('BUS_U_refreshToken');
         return res.json(token);
     } catch (e) {
         console.log(e);
@@ -50,13 +51,12 @@ export const logout = async (req,res) => {
 
 export const refresh = async (req,res) => {
     try {
-        const {refreshToken} = req.cookies;
-        console.log('cookies refreshToken',refreshToken);
-        const userData = await UserService.refresh(refreshToken)
+        const {BUS_U_refreshToken} = req.cookies;
+        const userData = await UserService.refresh(BUS_U_refreshToken)
         if (userData.error) {
             return res.status(503).json({ message: userData.error });
         }
-        res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        res.cookie('BUS_U_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
         return res.json(userData); 
     } catch (e) {
         console.log(e);

@@ -8,7 +8,7 @@ export const registration = async (login, firstName, lastName, password) => {
     const canditate = await AdministrationModel.findOne({ login });
 
     if (canditate) {
-      return { error: "A user with this login already exists" };
+      return { error: "Email already exists" };
     }
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
@@ -69,15 +69,12 @@ export const logout = async (refreshToken) => {
 
 export const refresh = async (token) => {
   try {
-    console.log("token", token);
     if (!token) {
       return { error: "Token Error" };
     }
 
     const tokenFromDb = await TokenService.findToken(token);
     const userData = await TokenService.validateRefreshToken(token);
-    console.log("tokenFromDb", tokenFromDb);
-    console.log("userData", userData);
 
     if (!userData || !tokenFromDb) {
       return { error: "Validation error" };
