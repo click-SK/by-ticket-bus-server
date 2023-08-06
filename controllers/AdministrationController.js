@@ -72,3 +72,14 @@ export const getAll = async (req, res) => {
       console.log(e);
     }
   };
+
+  export const deleteManager = async (req,res) => {
+    try{
+        const {id} = req.body;
+        const manager = await AdministrationModel.findByIdAndDelete(id)
+
+        res.json(manager)
+    } catch (error) {
+        console.log(error);
+    }
+}

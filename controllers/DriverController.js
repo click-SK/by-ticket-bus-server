@@ -36,3 +36,13 @@ export const getAll = async (req,res) => {
         console.log(error);
     }
 }
+export const deleteDriver = async (req,res) => {
+    try{
+        const {id} = req.body;
+        const driver = await DriverModel.findByIdAndDelete(id)
+
+        res.json(driver)
+    } catch (error) {
+        console.log(error);
+    }
+}
