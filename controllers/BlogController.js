@@ -11,6 +11,17 @@ export const getAllPosts = async (req,res) => {
     }
 }
 
+export const getOnePost = async (req,res) => {
+  try{
+    const {id} = req.params;
+      const post = await BlogModel.findById(id);
+
+      res.json(post)
+  } catch (error) {
+      console.log(error);
+  }
+}
+
 export const addNewPost = async (req,res) => {
     try{
         const {blogImage, titleSp, titleEn, descriptionSp, descriptionEn} = req.body;
@@ -101,3 +112,4 @@ export const removePost = async (req, res) => {
     res.status(500).json({ error: 'Помилка видалення поста' });
   }
   };
+

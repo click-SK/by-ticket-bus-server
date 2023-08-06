@@ -23,5 +23,6 @@ router.post('/create-blog-post', upload.single('blogImage'),BlogController.addNe
 router.patch('/update-blog-post',upload.single('blogImage'),BlogController.updatePost);
 router.delete('/remove-blog-post',BlogController.removePost);
 router.get('/get-all-blog-posts',BlogController.getAllPosts);
+router.get('/get-one-blog-post/:id',BlogController.getOnePost);
 
 export default router;
