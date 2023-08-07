@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from 'multer';
 import * as UsersController from '../controllers/UserController.js';
-import checkAuthUser from '../utils/checkAuthUser.js';
+import authMiddleware from "../utils/auth-middleware.js";
 
 const router = new Router();
 
@@ -26,5 +26,6 @@ router.get('/refresh-user',UsersController.refresh);
 router.patch('/update-user-name',UsersController.updateUserFirstLastName);
 router.patch('/update-user-contacts',UsersController.updateUserEmailNumberBirthday);
 router.patch('/update-user-password',UsersController.updateUserPassword);
+router.get('/get-me/:id',authMiddleware,UsersController.getMe);
 
 export default router;

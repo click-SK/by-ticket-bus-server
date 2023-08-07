@@ -3,6 +3,16 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import * as UserService from '../services/UserService.js';
 
+export const getMe = async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const userData = await UserModel.findOne({_id: userId})
+      return res.json(userData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
 export const register = async (req, res) => {
     try {
         const { email, firstName, lastName, password, birthday, phone } = req.body;
