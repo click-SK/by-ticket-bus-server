@@ -22,7 +22,13 @@ export const register = async (req, res) => {
         if (userData.error) {
             return res.json({ message: userData.error });
         }
-        res.cookie('BUS_U_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        // res.cookie('BUS_U_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        res.cookie('BUS_U_refreshToken', userData.refreshToken, {
+            maxAge: 30 * 24 * 60 * 60 * 1000, // Тривалість життя в мілісекундах
+            httpOnly: true,
+            secure: true, // Вимагає HTTPS
+            sameSite: 'none' // Дозволяє доступ з будь-якого джерела
+          });
         return res.json(userData); 
         
     } catch (error) {
@@ -72,7 +78,13 @@ export const refresh = async (req,res) => {
         if (userData.error) {
             return res.status(503).json({ message: userData.error });
         }
-        res.cookie('BUS_U_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        // res.cookie('BUS_U_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        res.cookie('BUS_U_refreshToken', userData.refreshToken, {
+            maxAge: 30 * 24 * 60 * 60 * 1000, // Тривалість життя в мілісекундах
+            httpOnly: true,
+            secure: true, // Вимагає HTTPS
+            sameSite: 'none' // Дозволяє доступ з будь-якого джерела
+          });
         return res.json(userData); 
     } catch (e) {
         console.log(e);
