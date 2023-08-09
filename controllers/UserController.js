@@ -40,7 +40,13 @@ export const login = async (req, res) => {
             return res.json({ message: userData.error });
         }
 
-        res.cookie('BUS_U_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        // res.cookie('BUS_U_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
+        res.cookie('BUS_U_refreshToken', userData.refreshToken, {
+            maxAge: 30 * 24 * 60 * 60 * 1000, // Тривалість життя в мілісекундах
+            httpOnly: true,
+            secure: true, // Вимагає HTTPS
+            sameSite: 'none' // Дозволяє доступ з будь-якого джерела
+          });
         return res.json(userData); 
 
     } catch(e) {
