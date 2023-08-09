@@ -8,6 +8,7 @@ router.post('/login-admin',AdministrationController.login);
 router.post('/logout-admin',AdministrationController.logout);
 router.get('/refresh-admin',AdministrationController.refresh);
 router.get('/get-all-managers',adminMiddleware,AdministrationController.getAll);
+router.get('/cheked-admin-token',AdministrationController.chekedToken);
 router.delete('/delete-manager',AdministrationController.deleteManager);
 
 export default router;

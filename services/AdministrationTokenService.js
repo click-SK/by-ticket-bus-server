@@ -3,8 +3,8 @@ import TokenModel from '../models/AdministrationToken.js';
 
 export const generateTokens = async (payload) => {
     try {
-        const accessToken = jwt.sign(payload, process.env.SECRET_KEY_ACCESS, {expiresIn: '1d'});
-        const refreshToken = jwt.sign(payload, process.env.SECRET_KEY_REFRESH, {expiresIn: '30d'});
+        const accessToken = await jwt.sign(payload, process.env.SECRET_KEY_ACCESS, {expiresIn: '1d'});
+        const refreshToken = await jwt.sign(payload, process.env.SECRET_KEY_REFRESH, {expiresIn: '30d'});
         return {
             accessToken,
             refreshToken
@@ -40,6 +40,7 @@ export const removeToken = async (refreshToken) => {
 export const validateRefreshToken = async (token) => {
     try {
         const userData = jwt.verify(token, process.env.SECRET_KEY_REFRESH);
+
         if(!userData) {
             return { error: 'User not found' };
         }
@@ -50,6 +51,7 @@ export const validateRefreshToken = async (token) => {
 }
 export const findToken = async (refreshToken) => {
     try {
+
         const tokenData = await TokenModel.findOne({refreshToken});
         return tokenData;
     } catch (e) {
@@ -58,7 +60,6 @@ export const findToken = async (refreshToken) => {
 }
 
 export const validateAccessToken = async (token) => {
-    console.log('token',token);
     try {
         const userData = await jwt.verify(token, process.env.SECRET_KEY_ACCESS);
         return userData;
