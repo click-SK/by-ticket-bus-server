@@ -176,9 +176,9 @@ export const refresh = async (req, res) => {
         const tokenFromDb = await TokenModel.findOne({ refreshToken: BUS_A_refreshToken });
         console.log('tokenFromDb Admin', tokenFromDb);
 
-        if (!tokenFromDb) {
-            return res.json({ message: "Validation error" });
-        }
+        // if (!tokenFromDb) {
+        //     return res.json({ message: "Validation error" });
+        // }
 
         try {
             const validatedToken = await jwt.verify(BUS_A_refreshToken, process.env.SECRET_KEY_REFRESH);
