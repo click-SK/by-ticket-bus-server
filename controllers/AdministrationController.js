@@ -115,117 +115,55 @@ export const chekedToken = async (req,res) => {
     }
 }
 
-// export const refresh = async (req,res) => {
-//     try {
-//             const {BUS_A_refreshToken} = req.cookies;
-//             console.log('BUS_A_refreshToken',BUS_A_refreshToken);
-
-//             if(!BUS_A_refreshToken) {
-//                 return res.json({ message: "Token Error" });
-//             }
-
-//             const tokenFromDb = await TokenModel.findOne({refreshToken: BUS_A_refreshToken});
-
-//             console.log('tokenFromDb',tokenFromDb);
-
-//             const valodateRefrestToken = jwt.verify(BUS_A_refreshToken, process.env.SECRET_KEY_REFRESH);
-
-//             console.log('valodateRefrestToken',valodateRefrestToken);
-
-//             if(!valodateRefrestToken || !tokenFromDb) {
-//                 return res.json({ message: "Validation error" });
-//             }
-
-//             const user = await AdministrationModel.findById(valodateRefrestToken.id);
-
-//             console.log('user',user);
-
-//             const administrationDto = await AdministrationDto.createAdministrationDto(user);
-
-//             console.log('administrationDto',administrationDto);
-
-//             const accessToken = await jwt.sign(administrationDto, process.env.SECRET_KEY_ACCESS, {expiresIn: '1d'});
-//             console.log('accessToken',accessToken);
-//             const refreshToken = await jwt.sign(administrationDto, process.env.SECRET_KEY_REFRESH, {expiresIn: '30d'});
-//             console.log('refreshToken',refreshToken);
-
-//             const tokenData = await TokenModel.findOne({user: administrationDto.id});
-
-//             console.log('tokenData',tokenData);
-
-//             if(tokenData) {
-//                 tokenData.refreshToken = refreshToken;
-//                 return tokenData.save();
-//             }
-            
-//             const token = await TokenModel.create({user: administrationDto.id, refreshToken})
-
-//             console.log('token',token);
-
-//             await res.cookie('BUS_A_refreshToken', refreshToken, {
-//                 maxAge: 30 * 24 * 60 * 60 * 1000, // Тривалість життя в мілісекундах
-//                 httpOnly: true,
-//                 secure: true, // Вимагає HTTPS
-//                 sameSite: 'none' // Дозволяє доступ з будь-якого джерела
-//               });
-//             return res.json({ refreshToken, accessToken, user }); 
-//     } catch (e) {
-//         console.log(e);
-//     }
-// }
-
-
 // export const refresh = async (req, res) => {
 //     try {
 //         const { BUS_A_refreshToken } = req.cookies;
-
+//         console.log('start token', BUS_A_refreshToken);
 //         if (!BUS_A_refreshToken) {
 //             return res.json({ message: "Token Error" });
 //         }
 
 //         const tokenFromDb = await TokenModel.findOne({ refreshToken: BUS_A_refreshToken });
+//         console.log('tokenFromDb Admin',tokenFromDb);
 
 //         if (!tokenFromDb) {
 //             return res.json({ message: "Validation error" });
 //         }
-
-//         try {
-//             const validatedToken = jwt.verify(BUS_A_refreshToken, process.env.SECRET_KEY_REFRESH);
-
-//             const user = await AdministrationModel.findById(validatedToken.id);
-//             const administrationDto = await AdministrationDto.createAdministrationDto(user);
-
-//             const accessToken = await jwt.sign(administrationDto, process.env.SECRET_KEY_ACCESS, { expiresIn: '1d' });
-//             const refreshToken = await jwt.sign(administrationDto, process.env.SECRET_KEY_REFRESH, { expiresIn: '30d' });
-
-//             // Видалення старого токену з бази даних
-//             await TokenModel.deleteMany({ refreshToken: BUS_A_refreshToken });
-
-//             // Збереження нового токену в базі даних
-//             await TokenService.saveTokens(administrationDto.id, refreshToken);
-//             console.log('start token',BUS_A_refreshToken);
-//             console.log('end token',refreshToken);
-
-//             // Видалення старого токену з куків та встановлення нового
-//             res.clearCookie('BUS_A_refreshToken');
-//             await res.cookie('BUS_A_refreshToken', refreshToken, {
-//                 maxAge: 30 * 24 * 60 * 60 * 1000,
-//                 httpOnly: true,
-//                 secure: true,
-//                 sameSite: 'none'
-//             });
-
-//             return res.json({ refreshToken, accessToken, user });
-//         } catch (error) {
-//             return res.json({ message: "Validation error" });
-//         }
+//             try {
+//                 const validatedToken = await jwt.verify(BUS_A_refreshToken, process.env.SECRET_KEY_REFRESH);
+    
+//                 const user = await AdministrationModel.findById(validatedToken.id);
+//                 const administrationDto = await AdministrationDto.createAdministrationDto(user);
+    
+//                 const accessToken = await jwt.sign(administrationDto, process.env.SECRET_KEY_ACCESS, { expiresIn: '1d' });
+//                 const refreshToken = await jwt.sign(administrationDto, process.env.SECRET_KEY_REFRESH, { expiresIn: '30d' });
+    
+//                 // Видалення старого токену з бази даних
+//                 // await TokenModel.deleteMany({ refreshToken: BUS_A_refreshToken });
+    
+//                 // Збереження нового токену в базі даних
+//                 await TokenService.saveTokens(administrationDto.id, refreshToken);
+    
+//                 // Видалення старого токену з куків та встановлення нового
+//                 // res.clearCookie('BUS_A_refreshToken');
+//                 await res.cookie('BUS_A_refreshToken', refreshToken, {
+//                     maxAge: 30 * 24 * 60 * 60 * 1000,
+//                     httpOnly: true,
+//                     secure: true,
+//                     sameSite: 'none'
+//                 });
+    
+//                 // Тепер виведення значень, коли токени оновлені
+//                 console.log('end token', refreshToken);
+    
+//                 return res.json({ refreshToken, accessToken, user });
+//             } catch (error) {
+//                 return res.json({ message: "Validation error" });
+//             }
 //     } catch (e) {
 //         console.log(e);
 //     }
 // }
-
-
-
 
 export const refresh = async (req, res) => {
     try {
@@ -236,42 +174,50 @@ export const refresh = async (req, res) => {
         }
 
         const tokenFromDb = await TokenModel.findOne({ refreshToken: BUS_A_refreshToken });
-        console.log('tokenFromDb',tokenFromDb);
+        console.log('tokenFromDb Admin', tokenFromDb);
 
         if (!tokenFromDb) {
             return res.json({ message: "Validation error" });
         }
-            try {
-                const validatedToken = await jwt.verify(BUS_A_refreshToken, process.env.SECRET_KEY_REFRESH);
-    
-                const user = await AdministrationModel.findById(validatedToken.id);
-                const administrationDto = await AdministrationDto.createAdministrationDto(user);
-    
-                const accessToken = await jwt.sign(administrationDto, process.env.SECRET_KEY_ACCESS, { expiresIn: '1d' });
-                const refreshToken = await jwt.sign(administrationDto, process.env.SECRET_KEY_REFRESH, { expiresIn: '30d' });
-    
-                // Видалення старого токену з бази даних
-                // await TokenModel.deleteMany({ refreshToken: BUS_A_refreshToken });
-    
-                // Збереження нового токену в базі даних
-                await TokenService.saveTokens(administrationDto.id, refreshToken);
-    
-                // Видалення старого токену з куків та встановлення нового
-                // res.clearCookie('BUS_A_refreshToken');
-                await res.cookie('BUS_A_refreshToken', refreshToken, {
-                    maxAge: 30 * 24 * 60 * 60 * 1000,
-                    httpOnly: true,
-                    secure: true,
-                    sameSite: 'none'
-                });
-    
-                // Тепер виведення значень, коли токени оновлені
-                console.log('end token', refreshToken);
-    
-                return res.json({ refreshToken, accessToken, user });
-            } catch (error) {
+
+        try {
+            const validatedToken = await jwt.verify(BUS_A_refreshToken, process.env.SECRET_KEY_REFRESH);
+
+            const user = await AdministrationModel.findById(validatedToken.id);
+            const administrationDto = await AdministrationDto.createAdministrationDto(user);
+
+            const accessToken = await jwt.sign(administrationDto, process.env.SECRET_KEY_ACCESS, { expiresIn: '1d' });
+            const refreshToken = await jwt.sign(administrationDto, process.env.SECRET_KEY_REFRESH, { expiresIn: '30d' });
+
+            // Видалення старого токену з бази даних
+            // await TokenModel.deleteMany({ refreshToken: BUS_A_refreshToken });
+
+            // Збереження нового токену в базі даних
+            await TokenService.saveTokens(administrationDto.id, refreshToken);
+
+            // Видалення старого токену з куків та встановлення нового
+            // res.clearCookie('BUS_A_refreshToken');
+            await res.cookie('BUS_A_refreshToken', refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none'
+            });
+
+            // Тепер виведення значень, коли токени оновлені
+            console.log('end token', refreshToken);
+
+            return res.json({ refreshToken, accessToken, user });
+        } catch (error) {
+            if (axios.isCancel(error)) {
+                console.log("Request was canceled:", error.message);
+                // Обробка ситуації, коли запит був скасований
+                // Наприклад, можна повернути відповідний статус або повідомлення
+                return res.json({ message: "Request canceled" });
+            } else {
                 return res.json({ message: "Validation error" });
             }
+        }
     } catch (e) {
         console.log(e);
     }
