@@ -22,13 +22,7 @@ export const updateAboutUs = async (req,res) => {
     try{
         const {descriptionSp, descriptionEn, id} = req.body;
 
-        console.log('descriptionSp',descriptionSp);
-        console.log('descriptionEn',descriptionEn);
-        console.log('id',id);
-
         const post = await AboutUsModel.findById(id);
-
-        console.log('post',post);
 
         post.descriptionEn = descriptionEn;
         post.descriptionSp = descriptionSp;

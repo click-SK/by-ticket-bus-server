@@ -74,16 +74,18 @@ export const refresh = async (token) => {
     }
 
     const tokenFromDb = await TokenService.findToken(token);
+
     const userData = await TokenService.validateRefreshToken(token);
+
 
     if (!userData || !tokenFromDb) {
       return { error: "Validation error" };
     }
-
     const user = await AdministrationModel.findById(userData.id);
-    const administrationDto = AdministrationDto.createAdministrationDto(user);
+    const administrationDto = await AdministrationDto.createAdministrationDto(user);
     const tokens = await TokenService.generateTokens({ ...administrationDto });
     const { accessToken, refreshToken } = tokens;
+
     await TokenService.saveTokens(administrationDto.id, refreshToken);
     return { refreshToken, accessToken, user };
   } catch (e) {
