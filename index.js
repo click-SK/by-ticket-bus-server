@@ -13,6 +13,8 @@ import AllCurrenciesRouter from './router/AllCurrenciesRouter.js';
 import CurrentCurrenciesRouter from './router/CurrentCurrenciesRouter.js';
 import DriverRouter from './router/DriverRouter.js';
 import PageInfoRouter from './router/PageInfoRouter.js';
+import RoutesRouter from './router/RoutesRouter.js';
+import BusRouter from './router/BusRouter.js';
 
 dotenv.config();
 
@@ -46,6 +48,8 @@ app.use('/api',AllCurrenciesRouter);
 app.use('/api',CurrentCurrenciesRouter);
 app.use('/api',DriverRouter);
 app.use('/api',PageInfoRouter);
+app.use('/api',RoutesRouter);
+app.use('/api',BusRouter);
 
 app.listen(process.env.PORT, () => {
     console.log('server start', process.env.PORT);
