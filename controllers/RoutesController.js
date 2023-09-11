@@ -2,7 +2,7 @@ import RoutesModel from "../models/Routes.js";
 
 export const create = async (req, res) => {
     try {
-        const {routes, distance, duration, routName} = req.body;
+        const {routes, distance, duration, routName, allStops} = req.body;
         console.log('routes',routes);
         let startRout = '';
         let endRout = '';
@@ -25,16 +25,16 @@ export const create = async (req, res) => {
             }
         })
         console.log('stopsArray',stopsArray);
-        const uniqueArray = [...new Set(stopsArray)];
-        console.log('uniqueArray',uniqueArray);
+        // const uniqueArray = [...new Set(stopsArray)];
+        // console.log('uniqueArray',uniqueArray);
         const data = await RoutesModel.create({
             routes,
             startRout,
             endRout,
-            distance,
-            duration,
+            distanceAll: distance,
+            durationAll: duration,
             routName,
-            allStops: uniqueArray
+            allStops
         })
 
         res.json(data)

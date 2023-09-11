@@ -3,10 +3,18 @@ import mongoose, {Schema} from "mongoose";
 const RoutesSchema = new Schema({
     routes:[Schema.Types.Mixed],
     startRout: String,
-    allStops: [String],
+    allStops: [{
+        start: String,
+        end: String,
+        distance: Number,
+        duration: Number,
+        timeStart: Number,
+        timeEnd: Number,
+        timeStops: Number
+    }],
     endRout: String,
-    distance: Number,
-    duration: Number,
+    distanceAll: Number,
+    durationAll: Number,
     routName: String
 },{timestamps: true,})
 

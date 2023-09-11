@@ -13,7 +13,6 @@ export const register = async (req, res) => {
         const userData = await AdministrationService.registration(login, firstName, lastName, password);
 
         if (userData.error) {
-            console.log('userData.error',userData.error);
             return res.json({ message: userData.error });
         }
         // res.cookie('BUS_A_refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 *1000, httpOnly: true})
@@ -118,7 +117,7 @@ export const chekedToken = async (req,res) => {
 // export const refresh = async (req, res) => {
 //     try {
 //         const { BUS_A_refreshToken } = req.cookies;
-//         console.log('start token', BUS_A_refreshToken);
+//         ('start token', BUS_A_refreshToken);
 //         if (!BUS_A_refreshToken) {
 //             return res.json({ message: "Token Error" });
 //         }
@@ -168,14 +167,12 @@ export const chekedToken = async (req,res) => {
 export const refresh = async (req, res) => {
     try {
         const { BUS_A_refreshToken } = req.cookies;
-        console.log('start token', BUS_A_refreshToken);
         if (!BUS_A_refreshToken) {
             return res.json({ message: "Token Error" });
         }
 
         // const tokenFromDb = await TokenModel.findOne({ refreshToken: BUS_A_refreshToken });
         const tokenFromDb = await TokenModel.findOne({ refreshToken: { $in: [BUS_A_refreshToken] } });
-        console.log('tokenFromDb Admin', tokenFromDb);
 
         if (!tokenFromDb) {
             return res.json({ message: "Validation error" });
@@ -206,12 +203,10 @@ export const refresh = async (req, res) => {
             });
 
             // Тепер виведення значень, коли токени оновлені
-            console.log('end token', refreshToken);
 
             return res.json({ refreshToken, accessToken, user });
         } catch (error) {
             if (axios.isCancel(error)) {
-                console.log("Request was canceled:", error.message);
                 // Обробка ситуації, коли запит був скасований
                 // Наприклад, можна повернути відповідний статус або повідомлення
                 return res.json({ message: "Request canceled" });

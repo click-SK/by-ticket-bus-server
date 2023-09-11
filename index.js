@@ -15,9 +15,9 @@ import DriverRouter from './router/DriverRouter.js';
 import PageInfoRouter from './router/PageInfoRouter.js';
 import RoutesRouter from './router/RoutesRouter.js';
 import BusRouter from './router/BusRouter.js';
+import DirectionsRouter from './router/DirectionsRouter.js';
 
 dotenv.config();
-
 const app = express();
 const db = 'mongodb+srv://roskichuk:qwerty12345@cluster0.ezfqhqh.mongodb.net/?retryWrites=true&w=majority';
 
@@ -50,6 +50,7 @@ app.use('/api',DriverRouter);
 app.use('/api',PageInfoRouter);
 app.use('/api',RoutesRouter);
 app.use('/api',BusRouter);
+app.use('/api',DirectionsRouter);
 
 app.listen(process.env.PORT, () => {
     console.log('server start', process.env.PORT);
