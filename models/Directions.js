@@ -36,7 +36,7 @@ const DirectionSchema = new Schema({
     routName: String,
     timeEnd: String,
     timeStart: String,
-    description: String
+    description: String,
 },{timestamps: true,})
 
 export default mongoose.model('Direction',DirectionSchema)

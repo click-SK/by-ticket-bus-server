@@ -1,5 +1,21 @@
 import DirectionsModel from "../models/Directions.js";
 import RouteForUsersModel from "../models/RouteForUsers.js";
+import TicketModel from "../models/Ticket.js";
+
+const createRouteForUser = async (route, routName) => {
+    return RouteForUsersModel.create({
+      startRout: route.start,
+      endRout: route.end,
+      price: route.price,
+      daysWork: route.daysWork,
+      distance: route.distance,
+      duration: route.duration,
+      timeStops: route.timeStops,
+      timeEnd: route.timeEnd,
+      timeStart: route.timeStart,
+      routName
+    });
+  };
 
 export const create = async (req, res) => {
     try {
@@ -17,41 +33,49 @@ export const create = async (req, res) => {
 
         if(data) {
              data.allStops.forEach((rout) => {
-                 RouteForUsersModel.create(
-                    {
-                        startRout: rout.start,
-                        endRout: rout.end,
-                        price: rout.price,
-                        daysWork: rout.daysWork,
-                        distance: rout.distance,
-                        duration: rout.duration,
-                        timeStops: rout.timeStops,
-                        timeEnd: rout.timeEnd,
-                        timeStart: rout.timeStart
-                    }
-                );
+                createRouteForUser(rout, data.routName)
                 rout.childRouts.forEach((child) => {
-                    RouteForUsersModel.create(
-                        {
-                            startRout: child.start,
-                            endRout: child.end,
-                            price: child.price,
-                            daysWork: child.daysWork,
-                            distance: child.distance,
-                            duration: child.duration,
-                            timeStops: child.timeStops,
-                            timeEnd: child.timeEnd,
-                            timeStart: child.timeStart
-                        }
-                    );
+                    createRouteForUser(child, data.routName)
                 })
             })
+        }
 
+        const numberSeats = 35;
+
+        if(data) {
+            const tickets = [];
+
+            for(let i=1; i <= numberSeats; i++) {
+                tickets.push({
+                    status: {
+                        free: true,
+                        bought: false
+                    },
+                    seatNumber: i,
+                    from: '',
+                    to: ''
+                })
+            }
+
+            await TicketModel.create({
+                routName: data.routName,
+                tickets
+            })
         }
 
         res.json(data)
 
     } catch(error) {
+        console.log(error);
+    }
+}
+
+export const getAll = async (req, res) => {
+    try {
+        const data = await RouteForUsersModel.find();
+
+        res.json(data)
+    }catch(error) {
         console.log(error);
     }
 }
