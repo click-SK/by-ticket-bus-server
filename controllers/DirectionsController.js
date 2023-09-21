@@ -51,11 +51,18 @@ export const create = async (req, res) => {
                         free: true,
                         bought: false
                     },
+                    user: {
+                        firstName: '',
+                        lastName: '',
+                        email: '',
+                        phone: '',
+                    },
                     seatNumber: i,
                     from: '',
                     to: '',
                     timeFrom: '',
                     timeTo: '',
+
                 })
             }
 

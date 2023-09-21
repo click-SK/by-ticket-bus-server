@@ -3,7 +3,7 @@ import UserModel from '../models/User.js';
 
 export const update = async (req, res) =>  {
     try {
-        const {routName, userId, cityFrom, cityTo, timeFrom, timeTo, seatNumbers} = req.body;
+        const {routName, userId, cityFrom, cityTo, timeFrom, timeTo, seatNumbers, firstName, lastName, email, phone} = req.body;
         console.log('routName',routName);
         console.log('userId',userId);
         console.log('cityFrom',cityFrom);
@@ -25,7 +25,6 @@ export const update = async (req, res) =>  {
             return res.json('User not found')
         }
 
-
         if (data) {
             console.log('work1');
             for (const ticket of ticketsArray) {
@@ -38,13 +37,23 @@ export const update = async (req, res) =>  {
                     }
                     ticket.status.free = false;
                     ticket.status.bought = true;
-                    ticket.user = userId;
+                    ticket.user.firstName = firstName;
+                    ticket.user.lastName = lastName;
+                    ticket.user.email = email;
+                    ticket.user.phone = phone;
                     ticket.from = cityFrom;
                     ticket.to = cityTo;
                     ticket.timeFrom = timeFrom;
                     ticket.timeTo = timeTo;
                     await data.save(); // Зберігаємо зміни до документа
-                    user.travelHistory.push({ticket: ticket._id})
+                    user.travelHistory.push({
+                        routName,
+                        seatNumber: ticket.seatNumber,
+                        from: cityFrom,
+                        to: cityTo,
+                        timeFrom,
+                        timeTo,
+                    })
                     await user.save();
                     console.log('data.tickets[idx].status.free', ticket.status.free);
                 }
@@ -108,12 +117,6 @@ export const update = async (req, res) =>  {
 export const getAll = async (req, res) => {
     try {
         const data = await TicketModel.find()
-        .populate({
-            path: "tickets",
-            populate: {
-              path: "user"
-            }
-          });
         res.json(data);
     } catch(error) {
         console.log(error);

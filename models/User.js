@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema(
+  {
     userImage: String,
     email: String,
     firstName: String,
@@ -10,10 +11,17 @@ const UserSchema = new mongoose.Schema({
     address: String,
     password: String,
     travelHistory: [
-        {
-            ticket: {type: mongoose.Schema.Types.ObjectId, ref: 'Ticket'},
-        }
+      {
+        routName: String,
+        seatNumber: Number,
+        from: String,
+        to: String,
+        timeFrom: String,
+        timeTo: String,
+      },
     ],
-},{timestamps: true,})
+  },
+  { timestamps: true }
+);
 
 export default mongoose.model('User',UserSchema)
