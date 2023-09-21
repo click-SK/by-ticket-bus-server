@@ -11,6 +11,8 @@ const TicketSchema = new Schema({
         seatNumber: Number,
         from: String,
         to: String,
+        timeFrom: String,
+        timeTo: String,
     }],
 },{timestamps: true,})
 

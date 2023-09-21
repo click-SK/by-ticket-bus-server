@@ -53,7 +53,9 @@ export const create = async (req, res) => {
                     },
                     seatNumber: i,
                     from: '',
-                    to: ''
+                    to: '',
+                    timeFrom: '',
+                    timeTo: '',
                 })
             }
 

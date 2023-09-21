@@ -16,6 +16,7 @@ import PageInfoRouter from './router/PageInfoRouter.js';
 import RoutesRouter from './router/RoutesRouter.js';
 import BusRouter from './router/BusRouter.js';
 import DirectionsRouter from './router/DirectionsRouter.js';
+import TicketRouter from './router/TicketRouter.js';
 
 dotenv.config();
 const app = express();
@@ -51,6 +52,7 @@ app.use('/api',PageInfoRouter);
 app.use('/api',RoutesRouter);
 app.use('/api',BusRouter);
 app.use('/api',DirectionsRouter);
+app.use('/api',TicketRouter);
 
 app.listen(process.env.PORT, () => {
     console.log('server start', process.env.PORT);
