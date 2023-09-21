@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
     password: String,
     travelHistory: [
         {
-            
+            ticket: {type: mongoose.Schema.Types.ObjectId, ref: 'Ticket'},
         }
     ],
 },{timestamps: true,})
