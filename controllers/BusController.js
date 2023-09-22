@@ -24,7 +24,7 @@ export const getAll = async (req, res) => {
         const data = await BusModel.find()
 
         res.json(data)
-
+        
     } catch(error) {
         console.log(error);
     }
