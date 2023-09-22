@@ -24,9 +24,7 @@ export const create = async (req, res) => {
                 stopsArray.push(rout.destination)
             }
         })
-        console.log('stopsArray',stopsArray);
-        // const uniqueArray = [...new Set(stopsArray)];
-        // console.log('uniqueArray',uniqueArray);
+
         const data = await RoutesModel.create({
             routes,
             startRout,

@@ -8,7 +8,7 @@ import * as TokenService from '../services/UserTokenService.js';
 export const getMe = async (req, res) => {
     try {
       const userId = req.params.id;
-      const userData = await UserModel.findOne({_id: userId})
+      const userData = await UserModel.findOne({_id: userId});
       return res.json(userData);
     } catch (e) {
       console.log(e);

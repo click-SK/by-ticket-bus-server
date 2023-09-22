@@ -7,7 +7,12 @@ const TicketSchema = new Schema({
             free: Boolean,
             bought: Boolean,
         },
-        user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+        user: {
+            firstName: String,
+            lastName: String,
+            email: String,
+            phone: String,
+        },
         seatNumber: Number,
         from: String,
         to: String,
