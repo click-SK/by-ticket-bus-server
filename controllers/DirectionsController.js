@@ -2,7 +2,7 @@ import DirectionsModel from "../models/Directions.js";
 import RouteForUsersModel from "../models/RouteForUsers.js";
 import TicketModel from "../models/Ticket.js";
 
-const createRouteForUser = async (route, routName) => {
+const createRouteForUser = async (route, routName, idx) => {
     return RouteForUsersModel.create({
       startRout: route.start,
       endRout: route.end,
@@ -13,7 +13,8 @@ const createRouteForUser = async (route, routName) => {
       timeStops: route.timeStops,
       timeEnd: route.timeEnd,
       timeStart: route.timeStart,
-      routName
+      routName,
+      numberStops: idx
     });
   };
 
@@ -29,13 +30,11 @@ export const create = async (req, res) => {
 
         const data = await DirectionsModel.create({...newRout, timeAtStop, price, drivers, daysWork, description}); 
 
-        console.log('data',data.allStops[0].childRouts[0]);
-
         if(data) {
-             data.allStops.forEach((rout) => {
-                createRouteForUser(rout, data.routName)
+             data.allStops.forEach((rout, idx) => {
+                createRouteForUser(rout, data.routName, idx)
                 rout.childRouts.forEach((child) => {
-                    createRouteForUser(child, data.routName)
+                    createRouteForUser(child, data.routName, idx)
                 })
             })
         }
@@ -82,6 +81,15 @@ export const create = async (req, res) => {
 export const getAll = async (req, res) => {
     try {
         const data = await RouteForUsersModel.find();
+
+        res.json(data)
+    }catch(error) {
+        console.log(error);
+    }
+}
+export const getAllOriginDirection = async (req, res) => {
+    try {
+        const data = await DirectionsModel.find();
 
         res.json(data)
     }catch(error) {
